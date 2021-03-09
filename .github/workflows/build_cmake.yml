@@ -85,45 +85,16 @@ jobs:
         ${{ steps.cmake_and_ninja.outputs.cmake_dir }}/cmake -E tar cJfv Release.tar Release
         dir 
 
-    - name: Upload
-      uses: actions/upload-artifact@v1
+    - name: "Build & test"
+      run: |
+        echo "done!"
+    - uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        path: Release.tar
-        name: Release.tar
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Direct Action"
+        files: |
+          Release/*.*      
 
-
-
-  publish:
-    #if: contains(github.ref, 'tags/v')
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-        - {
-            name: "Windows Latest MSVC", artifact: "Release.tar",
-            os: ubuntu-latest
-          }
-
-    needs: build
-    steps:
-    
-      - name: Download artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: ${{ matrix.config.artifact }}
-          path: ./
-    
-      - name: "Build & test"
-        run: |
-          echo "done!"
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            Release.tar        
 

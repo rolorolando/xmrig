@@ -34,7 +34,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    
+    - name: XMRIG DEPS DOWNLOAD
+      working-directory: c:\
+      run: |
+        git clone https://github.com/xmrig/xmrig.git
 
+      
     - name: Download Ninja and CMake
       id: cmake_and_ninja
       shell: cmake -P {0}

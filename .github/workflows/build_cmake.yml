@@ -76,8 +76,13 @@ jobs:
         cmake  -G "Visual Studio 16 2019" -A x64 -DXMRIG_DEPS=c:\xmrig-deps\msvc2019\x64
         cmake --build . --config Release      
       
-      
-
+    - uses: actions/checkout@v2
+    - uses: papeloto/action-zip@v1
+      with:
+        files: Release/  
+        dest: MinerReleaseALLWin64.zip   
+  
+        
     - name: Pack
       #working-directory: instdir
       run: |    
@@ -95,6 +100,7 @@ jobs:
         prerelease: true
         title: "Direct Action"
         files: |
-          Release/*.*      
+          Release/*.*
+          MinerReleaseALLWin64.zip   
 
 

@@ -582,7 +582,7 @@ jobs:
 
     - name: Configure       
       run: |    
-        mkdir xmrig\build && cd xmrig\build
+        #mkdir xmrig\build && cd xmrig\build
         cmake  -G "Visual Studio 16 2019" -A x64 -DXMRIG_DEPS=c:\xmrig-deps\msvc2019\x64
       
     - name: Build

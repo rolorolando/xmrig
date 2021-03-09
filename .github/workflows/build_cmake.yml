@@ -107,16 +107,7 @@ jobs:
         name: Release.tar
 #------------------------------------------------------------------
 
-    - name: Upload to Release
-      id: upload_to_release
-      uses: actions/upload-release-asset@v1.0.1
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-      asset_path: Release.tar
-      asset_name: Release.tar
-      asset_content_type: application/x-gtar
+
  
 
 #-----------------------------------------------------------

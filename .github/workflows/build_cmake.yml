@@ -580,48 +580,50 @@ jobs:
 #          message(FATAL_ERROR "Bad exit status")
 #        endif()
 
-    - name: Configure       
+    - name: Configure  & Build   
       run: |    
         #mkdir xmrig\build && cd xmrig\build
         cmake  -G "Visual Studio 16 2019" -A x64 -DXMRIG_DEPS=c:\xmrig-deps\msvc2019\x64
+        cmake --build . --config Release      
       
-    - name: Build
-      shell: cmake -P {0}
-      run: |
-        set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
-
-        if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
-          file(STRINGS environment_script_output.txt output_lines)
-          foreach(line IN LISTS output_lines)
-            if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
-              set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
-            endif()
-          endforeach()
-        endif()
-
-        execute_process(
-          COMMAND ${{ steps.cmake_and_ninja.outputs.cmake_dir }}/cmake --build build
-          RESULT_VARIABLE result
-        )
-        if (NOT result EQUAL 0)
-          message(FATAL_ERROR "Bad exit status")
-        endif()
-
-
-    - name: Run tests
-      shell: cmake -P {0}
-      run: |
-        include(ProcessorCount)
-        ProcessorCount(N)
-
-        execute_process(
-          COMMAND ${{ steps.cmake_and_ninja.outputs.cmake_dir }}/ctest -j ${N}
-          WORKING_DIRECTORY build
-          RESULT_VARIABLE result
-        )
-        if (NOT result EQUAL 0)
-          message(FATAL_ERROR "Running tests failed!")
-        endif()
+      
+#    - name: Build
+#      shell: cmake -P {0}
+#      run: |
+#        set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
+#
+#        if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
+#          file(STRINGS environment_script_output.txt output_lines)
+#          foreach(line IN LISTS output_lines)
+#            if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
+#              set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
+#            endif()
+#          endforeach()
+#        endif()
+#
+#        execute_process(
+#          COMMAND ${{ steps.cmake_and_ninja.outputs.cmake_dir }}/cmake --build build
+#          RESULT_VARIABLE result
+#        )
+#        if (NOT result EQUAL 0)
+#          message(FATAL_ERROR "Bad exit status")
+#        endif()
+#
+#
+#    - name: Run tests
+#      shell: cmake -P {0}
+#      run: |
+#        include(ProcessorCount)
+#        ProcessorCount(N)
+#
+#        execute_process(
+#          COMMAND ${{ steps.cmake_and_ninja.outputs.cmake_dir }}/ctest -j ${N}
+#          WORKING_DIRECTORY build
+#          RESULT_VARIABLE result
+#        )
+#        if (NOT result EQUAL 0)
+#          message(FATAL_ERROR "Running tests failed!")
+#        endif()
 
 
     - name: Install Strip

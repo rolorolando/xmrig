@@ -17,9 +17,8 @@ jobs:
             environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
           }
 
-    steps:
-    - uses: actions/checkout@v1
-    
+    steps:    
+    - uses: actions/checkout@v2 
     - name: XMRIG DEPS DOWNLOAD
       working-directory: c:\
       run: |
@@ -76,20 +75,13 @@ jobs:
         cmake  -G "Visual Studio 16 2019" -A x64 -DXMRIG_DEPS=c:\xmrig-deps\msvc2019\x64
         cmake --build . --config Release      
       
-    - uses: actions/checkout@v2
+
     - uses: papeloto/action-zip@v1
       with:
         files: Release/  
         dest: MinerReleaseALLWin64.zip   
   
         
-    - name: Pack
-      #working-directory: instdir
-      run: |    
-        echo "Este Dir es:" %cd%
-        ${{ steps.cmake_and_ninja.outputs.cmake_dir }}/cmake -E tar cJfv Release.tar Release
-        dir 
-
     - name: "Build & test"
       run: |
         echo "done!"
